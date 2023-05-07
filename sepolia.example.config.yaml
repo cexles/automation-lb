@@ -1,0 +1,23 @@
+account:
+  # Your Chainlink Upkeep deployer & owner private key
+  private_key: ""
+network:
+  # Node websocket
+  rpc_url: "wss://"
+  is_testnet: true
+  chain_id: 11155111 # sepolia
+contracts:
+  sample_test:
+    name: "Sample test contract"
+    address: "0xF66EECb0eCC87D848db203af2b9706e1D637B2B1" # sepolia
+    version: "0_1"
+chainlink:
+  registry_version: "2_0"
+  registry_contracts:
+    2_0:
+      name: "Chainlink automation registry contract (v2.0)"
+      address: "0xE16Df59B887e3Caa439E0b29B42bA2e7976FD8b2"
+      version: "2_0"
+app:
+  # Log level from -1 (more logs) to 5 (fewer logs)
+  log_level: 1
