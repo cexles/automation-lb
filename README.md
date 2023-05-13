@@ -1,6 +1,9 @@
 # Automation-lb
 Chainlink Automation scaling &amp; loadbalancing 
 
+![sample-log.png](sample-log.png)
+
+
 ## Motivation
 _Nobody likes out-of-gas._
 
@@ -9,6 +12,7 @@ This software will allow us to unlock the full potential of Chainlink Automation
 
 ## Current stage
 We started an initial development of MVP with smart contracts deployed on Sepolia Ethereum testnet.
+11.05.2022: MVP PoC version. Needs refactor & minor bug fixing.
 
 ## Desired result
 Hassle-free automated scaling for any Chainlink Automation compatible contract. 
@@ -18,11 +22,11 @@ Hassle-free automated scaling for any Chainlink Automation compatible contract.
 - [x] Initial project skeleton
 - [x] Sample test smart contract
 - [ ] Multiple contracts support
-- [ ] Automated upkeeps creating
+- [x] Automated upkeeps creating
 - [ ] Upkeeps load metrics
-- [ ] Automated on-condition upkeeps scaling
+- [x] Automated on-condition upkeeps scaling
 - [ ] Upkeeps scailing prediction
-- [ ] Automated Upkeep's balance top-up
+- [x] Automated Upkeep's balance top-up
 - [ ] API
 - [ ] Dashboard
 - [ ] Tests

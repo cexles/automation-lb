@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/cexles/automation-lb/internal/model"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v3"
 	"math/big"
@@ -33,12 +34,13 @@ type AppConfig struct {
 }
 
 type ChainlinkConfig struct {
-	RegistryVersion         string          `yaml:"registry_version"`
-	RegistryContracts       ContractsConfig `yaml:"registry_contracts"`
-	CurrentRegistryContract *model.Contract
+	UpkeepControllerAddress common.Address `yaml:"upkeep_controller_address"`
+	MinControllerApprove    *big.Int       `yaml:"min_controller_approve"`
+	TopupAmount             *big.Int       `yaml:"topup_amount"`
+	TokenAddress            common.Address `yaml:"token_address"`
 }
 
-type ContractsConfig map[string]model.Contract
+type ContractsConfig map[string]model.ContractInfo
 
 func NewConfig(filename string) (*Config, error) {
 	if len(filename) == 0 {
@@ -46,7 +48,7 @@ func NewConfig(filename string) (*Config, error) {
 	}
 	f, err := os.ReadFile(filename)
 	if err != nil {
-		log.Panic().Str("filename", filename).Msg(err.Error())
+		log.Panic().Err(err).Str("filename", filename).Msg("failed to read config file")
 		return nil, err
 	}
 
@@ -54,26 +56,13 @@ func NewConfig(filename string) (*Config, error) {
 
 	err = yaml.Unmarshal(f, cfg)
 	if err != nil {
-		log.Panic().Str("filename", filename).Msg(err.Error())
+		log.Panic().Err(err).Str("filename", filename).Msg("failed to unmarshal yaml")
 		return nil, err
 	}
 
-	for version, contract := range cfg.Chainlink.RegistryContracts {
-		if version != cfg.Chainlink.RegistryVersion {
-			continue
-		}
-
-		cfg.Chainlink.CurrentRegistryContract = &contract
-		log.Info().Fields(map[string]any{
-			"address": contract.Address,
-			"version": contract.Version,
-		}).Msg("Registry contract config found")
-		break
-	}
-
-	if cfg.Chainlink.CurrentRegistryContract == nil {
-		log.Panic().Str("registry_version", cfg.Chainlink.RegistryVersion).Msg("Registry Contract version unsupported.")
-	}
+	log.Info().Fields(map[string]any{
+		"address": cfg.Chainlink.UpkeepControllerAddress,
+	}).Msg("upkeep controller found")
 
 	return cfg, err
 }

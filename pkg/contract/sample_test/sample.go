@@ -29,9 +29,21 @@ var (
 	_ = abi.ConvertType
 )
 
+// RegistrationParams is an auto generated low-level Go binding around an user-defined struct.
+type RegistrationParams struct {
+	Name           string
+	EncryptedEmail []byte
+	UpkeepContract common.Address
+	GasLimit       uint32
+	AdminAddress   common.Address
+	CheckData      []byte
+	OffchainConfig []byte
+	Amount         *big.Int
+}
+
 // SampleTestContractMetaData contains all meta data concerning the SampleTestContract contract.
 var SampleTestContractMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newElements\",\"type\":\"uint256\"}],\"name\":\"addElementsToArray\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"array\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"checkMaxIterations\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"checkData\",\"type\":\"bytes\"}],\"name\":\"checkUpkeep\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"upkeepNeeded\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"performData\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"checkOffset\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"checkLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"performOffset\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"performLimit\",\"type\":\"uint256\"}],\"name\":\"encodeParamsForCheck\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"checkArray\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"performOffset\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"performLimit\",\"type\":\"uint256\"}],\"name\":\"encodeParamsForPerform\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getArray\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isUpkeepNeeded\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"performMaxIterations\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"performData\",\"type\":\"bytes\"}],\"name\":\"performUpkeep\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newLength\",\"type\":\"uint256\"}],\"name\":\"resizeArray\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_checkMaxIterations\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_performMaxIterations\",\"type\":\"uint256\"}],\"name\":\"setMaxIterations\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"toggleFlag\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"contractLinkTokenInterface\",\"name\":\"link\",\"type\":\"address\"},{\"internalType\":\"contractKeeperRegistrarInterface\",\"name\":\"registrar\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"UpkeepCreated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"i_link\",\"outputs\":[{\"internalType\":\"contractLinkTokenInterface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"i_registrar\",\"outputs\":[{\"internalType\":\"contractKeeperRegistrarInterface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"encryptedEmail\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"upkeepContract\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"gasLimit\",\"type\":\"uint32\"},{\"internalType\":\"address\",\"name\":\"adminAddress\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"checkData\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"offchainConfig\",\"type\":\"bytes\"},{\"internalType\":\"uint96\",\"name\":\"amount\",\"type\":\"uint96\"}],\"internalType\":\"structRegistrationParams\",\"name\":\"params\",\"type\":\"tuple\"}],\"name\":\"registerAndPredictID\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // SampleTestContractABI is the input ABI used to generate the binding from.
@@ -180,369 +192,219 @@ func (_SampleTestContract *SampleTestContractTransactorRaw) Transact(opts *bind.
 	return _SampleTestContract.Contract.contract.Transact(opts, method, params...)
 }
 
-// Array is a free data retrieval call binding the contract method 0x38d94193.
+// ILink is a free data retrieval call binding the contract method 0x7d253aff.
 //
-// Solidity: function array(uint256 ) view returns(uint256)
-func (_SampleTestContract *SampleTestContractCaller) Array(opts *bind.CallOpts, arg0 *big.Int) (*big.Int, error) {
+// Solidity: function i_link() view returns(address)
+func (_SampleTestContract *SampleTestContractCaller) ILink(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "array", arg0)
+	err := _SampleTestContract.contract.Call(opts, &out, "i_link")
 
 	if err != nil {
-		return *new(*big.Int), err
+		return *new(common.Address), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
 
 	return out0, err
 
 }
 
-// Array is a free data retrieval call binding the contract method 0x38d94193.
+// ILink is a free data retrieval call binding the contract method 0x7d253aff.
 //
-// Solidity: function array(uint256 ) view returns(uint256)
-func (_SampleTestContract *SampleTestContractSession) Array(arg0 *big.Int) (*big.Int, error) {
-	return _SampleTestContract.Contract.Array(&_SampleTestContract.CallOpts, arg0)
+// Solidity: function i_link() view returns(address)
+func (_SampleTestContract *SampleTestContractSession) ILink() (common.Address, error) {
+	return _SampleTestContract.Contract.ILink(&_SampleTestContract.CallOpts)
 }
 
-// Array is a free data retrieval call binding the contract method 0x38d94193.
+// ILink is a free data retrieval call binding the contract method 0x7d253aff.
 //
-// Solidity: function array(uint256 ) view returns(uint256)
-func (_SampleTestContract *SampleTestContractCallerSession) Array(arg0 *big.Int) (*big.Int, error) {
-	return _SampleTestContract.Contract.Array(&_SampleTestContract.CallOpts, arg0)
+// Solidity: function i_link() view returns(address)
+func (_SampleTestContract *SampleTestContractCallerSession) ILink() (common.Address, error) {
+	return _SampleTestContract.Contract.ILink(&_SampleTestContract.CallOpts)
 }
 
-// CheckMaxIterations is a free data retrieval call binding the contract method 0xf9f9f7ef.
+// IRegistrar is a free data retrieval call binding the contract method 0x442b1278.
 //
-// Solidity: function checkMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractCaller) CheckMaxIterations(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function i_registrar() view returns(address)
+func (_SampleTestContract *SampleTestContractCaller) IRegistrar(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "checkMaxIterations")
+	err := _SampleTestContract.contract.Call(opts, &out, "i_registrar")
 
 	if err != nil {
-		return *new(*big.Int), err
+		return *new(common.Address), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
 
 	return out0, err
 
 }
 
-// CheckMaxIterations is a free data retrieval call binding the contract method 0xf9f9f7ef.
+// IRegistrar is a free data retrieval call binding the contract method 0x442b1278.
 //
-// Solidity: function checkMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractSession) CheckMaxIterations() (*big.Int, error) {
-	return _SampleTestContract.Contract.CheckMaxIterations(&_SampleTestContract.CallOpts)
+// Solidity: function i_registrar() view returns(address)
+func (_SampleTestContract *SampleTestContractSession) IRegistrar() (common.Address, error) {
+	return _SampleTestContract.Contract.IRegistrar(&_SampleTestContract.CallOpts)
 }
 
-// CheckMaxIterations is a free data retrieval call binding the contract method 0xf9f9f7ef.
+// IRegistrar is a free data retrieval call binding the contract method 0x442b1278.
 //
-// Solidity: function checkMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractCallerSession) CheckMaxIterations() (*big.Int, error) {
-	return _SampleTestContract.Contract.CheckMaxIterations(&_SampleTestContract.CallOpts)
+// Solidity: function i_registrar() view returns(address)
+func (_SampleTestContract *SampleTestContractCallerSession) IRegistrar() (common.Address, error) {
+	return _SampleTestContract.Contract.IRegistrar(&_SampleTestContract.CallOpts)
 }
 
-// CheckUpkeep is a free data retrieval call binding the contract method 0x6e04ff0d.
+// RegisterAndPredictID is a paid mutator transaction binding the contract method 0xfd111cca.
 //
-// Solidity: function checkUpkeep(bytes checkData) view returns(bool upkeepNeeded, bytes performData)
-func (_SampleTestContract *SampleTestContractCaller) CheckUpkeep(opts *bind.CallOpts, checkData []byte) (struct {
-	UpkeepNeeded bool
-	PerformData  []byte
-}, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "checkUpkeep", checkData)
+// Solidity: function registerAndPredictID((string,bytes,address,uint32,address,bytes,bytes,uint96) params) returns()
+func (_SampleTestContract *SampleTestContractTransactor) RegisterAndPredictID(opts *bind.TransactOpts, params RegistrationParams) (*types.Transaction, error) {
+	return _SampleTestContract.contract.Transact(opts, "registerAndPredictID", params)
+}
 
-	outstruct := new(struct {
-		UpkeepNeeded bool
-		PerformData  []byte
-	})
-	if err != nil {
-		return *outstruct, err
+// RegisterAndPredictID is a paid mutator transaction binding the contract method 0xfd111cca.
+//
+// Solidity: function registerAndPredictID((string,bytes,address,uint32,address,bytes,bytes,uint96) params) returns()
+func (_SampleTestContract *SampleTestContractSession) RegisterAndPredictID(params RegistrationParams) (*types.Transaction, error) {
+	return _SampleTestContract.Contract.RegisterAndPredictID(&_SampleTestContract.TransactOpts, params)
+}
+
+// RegisterAndPredictID is a paid mutator transaction binding the contract method 0xfd111cca.
+//
+// Solidity: function registerAndPredictID((string,bytes,address,uint32,address,bytes,bytes,uint96) params) returns()
+func (_SampleTestContract *SampleTestContractTransactorSession) RegisterAndPredictID(params RegistrationParams) (*types.Transaction, error) {
+	return _SampleTestContract.Contract.RegisterAndPredictID(&_SampleTestContract.TransactOpts, params)
+}
+
+// SampleTestContractUpkeepCreatedIterator is returned from FilterUpkeepCreated and is used to iterate over the raw logs and unpacked data for UpkeepCreated events raised by the SampleTestContract contract.
+type SampleTestContractUpkeepCreatedIterator struct {
+	Event *SampleTestContractUpkeepCreated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *SampleTestContractUpkeepCreatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
 	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(SampleTestContractUpkeepCreated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
 
-	outstruct.UpkeepNeeded = *abi.ConvertType(out[0], new(bool)).(*bool)
-	outstruct.PerformData = *abi.ConvertType(out[1], new([]byte)).(*[]byte)
-
-	return *outstruct, err
-
-}
-
-// CheckUpkeep is a free data retrieval call binding the contract method 0x6e04ff0d.
-//
-// Solidity: function checkUpkeep(bytes checkData) view returns(bool upkeepNeeded, bytes performData)
-func (_SampleTestContract *SampleTestContractSession) CheckUpkeep(checkData []byte) (struct {
-	UpkeepNeeded bool
-	PerformData  []byte
-}, error) {
-	return _SampleTestContract.Contract.CheckUpkeep(&_SampleTestContract.CallOpts, checkData)
-}
-
-// CheckUpkeep is a free data retrieval call binding the contract method 0x6e04ff0d.
-//
-// Solidity: function checkUpkeep(bytes checkData) view returns(bool upkeepNeeded, bytes performData)
-func (_SampleTestContract *SampleTestContractCallerSession) CheckUpkeep(checkData []byte) (struct {
-	UpkeepNeeded bool
-	PerformData  []byte
-}, error) {
-	return _SampleTestContract.Contract.CheckUpkeep(&_SampleTestContract.CallOpts, checkData)
-}
-
-// EncodeParamsForCheck is a free data retrieval call binding the contract method 0xb047ce2d.
-//
-// Solidity: function encodeParamsForCheck(uint256 checkOffset, uint256 checkLimit, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractCaller) EncodeParamsForCheck(opts *bind.CallOpts, checkOffset *big.Int, checkLimit *big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "encodeParamsForCheck", checkOffset, checkLimit, performOffset, performLimit)
-
-	if err != nil {
-		return *new([]byte), err
+		default:
+			return false
+		}
 	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(SampleTestContractUpkeepCreated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
 
-	out0 := *abi.ConvertType(out[0], new([]byte)).(*[]byte)
-
-	return out0, err
-
-}
-
-// EncodeParamsForCheck is a free data retrieval call binding the contract method 0xb047ce2d.
-//
-// Solidity: function encodeParamsForCheck(uint256 checkOffset, uint256 checkLimit, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractSession) EncodeParamsForCheck(checkOffset *big.Int, checkLimit *big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	return _SampleTestContract.Contract.EncodeParamsForCheck(&_SampleTestContract.CallOpts, checkOffset, checkLimit, performOffset, performLimit)
-}
-
-// EncodeParamsForCheck is a free data retrieval call binding the contract method 0xb047ce2d.
-//
-// Solidity: function encodeParamsForCheck(uint256 checkOffset, uint256 checkLimit, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractCallerSession) EncodeParamsForCheck(checkOffset *big.Int, checkLimit *big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	return _SampleTestContract.Contract.EncodeParamsForCheck(&_SampleTestContract.CallOpts, checkOffset, checkLimit, performOffset, performLimit)
-}
-
-// EncodeParamsForPerform is a free data retrieval call binding the contract method 0xa25c54ea.
-//
-// Solidity: function encodeParamsForPerform(uint256[] checkArray, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractCaller) EncodeParamsForPerform(opts *bind.CallOpts, checkArray []*big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "encodeParamsForPerform", checkArray, performOffset, performLimit)
-
-	if err != nil {
-		return *new([]byte), err
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
 	}
-
-	out0 := *abi.ConvertType(out[0], new([]byte)).(*[]byte)
-
-	return out0, err
-
 }
 
-// EncodeParamsForPerform is a free data retrieval call binding the contract method 0xa25c54ea.
-//
-// Solidity: function encodeParamsForPerform(uint256[] checkArray, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractSession) EncodeParamsForPerform(checkArray []*big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	return _SampleTestContract.Contract.EncodeParamsForPerform(&_SampleTestContract.CallOpts, checkArray, performOffset, performLimit)
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *SampleTestContractUpkeepCreatedIterator) Error() error {
+	return it.fail
 }
 
-// EncodeParamsForPerform is a free data retrieval call binding the contract method 0xa25c54ea.
-//
-// Solidity: function encodeParamsForPerform(uint256[] checkArray, uint256 performOffset, uint256 performLimit) pure returns(bytes)
-func (_SampleTestContract *SampleTestContractCallerSession) EncodeParamsForPerform(checkArray []*big.Int, performOffset *big.Int, performLimit *big.Int) ([]byte, error) {
-	return _SampleTestContract.Contract.EncodeParamsForPerform(&_SampleTestContract.CallOpts, checkArray, performOffset, performLimit)
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *SampleTestContractUpkeepCreatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
 }
 
-// GetArray is a free data retrieval call binding the contract method 0xd504ea1d.
-//
-// Solidity: function getArray() view returns(uint256[])
-func (_SampleTestContract *SampleTestContractCaller) GetArray(opts *bind.CallOpts) ([]*big.Int, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "getArray")
+// SampleTestContractUpkeepCreated represents a UpkeepCreated event raised by the SampleTestContract contract.
+type SampleTestContractUpkeepCreated struct {
+	Id  *big.Int
+	Raw types.Log // Blockchain specific contextual infos
+}
 
+// FilterUpkeepCreated is a free log retrieval operation binding the contract event 0x73827404e930da1450aa92d0348dd0939840f4850415c6b42a1bcf9de4162d7b.
+//
+// Solidity: event UpkeepCreated(uint256 id)
+func (_SampleTestContract *SampleTestContractFilterer) FilterUpkeepCreated(opts *bind.FilterOpts) (*SampleTestContractUpkeepCreatedIterator, error) {
+
+	logs, sub, err := _SampleTestContract.contract.FilterLogs(opts, "UpkeepCreated")
 	if err != nil {
-		return *new([]*big.Int), err
+		return nil, err
 	}
-
-	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
-
-	return out0, err
-
+	return &SampleTestContractUpkeepCreatedIterator{contract: _SampleTestContract.contract, event: "UpkeepCreated", logs: logs, sub: sub}, nil
 }
 
-// GetArray is a free data retrieval call binding the contract method 0xd504ea1d.
+// WatchUpkeepCreated is a free log subscription operation binding the contract event 0x73827404e930da1450aa92d0348dd0939840f4850415c6b42a1bcf9de4162d7b.
 //
-// Solidity: function getArray() view returns(uint256[])
-func (_SampleTestContract *SampleTestContractSession) GetArray() ([]*big.Int, error) {
-	return _SampleTestContract.Contract.GetArray(&_SampleTestContract.CallOpts)
-}
+// Solidity: event UpkeepCreated(uint256 id)
+func (_SampleTestContract *SampleTestContractFilterer) WatchUpkeepCreated(opts *bind.WatchOpts, sink chan<- *SampleTestContractUpkeepCreated) (event.Subscription, error) {
 
-// GetArray is a free data retrieval call binding the contract method 0xd504ea1d.
-//
-// Solidity: function getArray() view returns(uint256[])
-func (_SampleTestContract *SampleTestContractCallerSession) GetArray() ([]*big.Int, error) {
-	return _SampleTestContract.Contract.GetArray(&_SampleTestContract.CallOpts)
-}
-
-// IsUpkeepNeeded is a free data retrieval call binding the contract method 0x9ed7b2bc.
-//
-// Solidity: function isUpkeepNeeded() view returns(bool)
-func (_SampleTestContract *SampleTestContractCaller) IsUpkeepNeeded(opts *bind.CallOpts) (bool, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "isUpkeepNeeded")
-
+	logs, sub, err := _SampleTestContract.contract.WatchLogs(opts, "UpkeepCreated")
 	if err != nil {
-		return *new(bool), err
+		return nil, err
 	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(SampleTestContractUpkeepCreated)
+				if err := _SampleTestContract.contract.UnpackLog(event, "UpkeepCreated", log); err != nil {
+					return err
+				}
+				event.Raw = log
 
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
 }
 
-// IsUpkeepNeeded is a free data retrieval call binding the contract method 0x9ed7b2bc.
+// ParseUpkeepCreated is a log parse operation binding the contract event 0x73827404e930da1450aa92d0348dd0939840f4850415c6b42a1bcf9de4162d7b.
 //
-// Solidity: function isUpkeepNeeded() view returns(bool)
-func (_SampleTestContract *SampleTestContractSession) IsUpkeepNeeded() (bool, error) {
-	return _SampleTestContract.Contract.IsUpkeepNeeded(&_SampleTestContract.CallOpts)
-}
-
-// IsUpkeepNeeded is a free data retrieval call binding the contract method 0x9ed7b2bc.
-//
-// Solidity: function isUpkeepNeeded() view returns(bool)
-func (_SampleTestContract *SampleTestContractCallerSession) IsUpkeepNeeded() (bool, error) {
-	return _SampleTestContract.Contract.IsUpkeepNeeded(&_SampleTestContract.CallOpts)
-}
-
-// PerformMaxIterations is a free data retrieval call binding the contract method 0xcd61796a.
-//
-// Solidity: function performMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractCaller) PerformMaxIterations(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _SampleTestContract.contract.Call(opts, &out, "performMaxIterations")
-
-	if err != nil {
-		return *new(*big.Int), err
+// Solidity: event UpkeepCreated(uint256 id)
+func (_SampleTestContract *SampleTestContractFilterer) ParseUpkeepCreated(log types.Log) (*SampleTestContractUpkeepCreated, error) {
+	event := new(SampleTestContractUpkeepCreated)
+	if err := _SampleTestContract.contract.UnpackLog(event, "UpkeepCreated", log); err != nil {
+		return nil, err
 	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// PerformMaxIterations is a free data retrieval call binding the contract method 0xcd61796a.
-//
-// Solidity: function performMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractSession) PerformMaxIterations() (*big.Int, error) {
-	return _SampleTestContract.Contract.PerformMaxIterations(&_SampleTestContract.CallOpts)
-}
-
-// PerformMaxIterations is a free data retrieval call binding the contract method 0xcd61796a.
-//
-// Solidity: function performMaxIterations() view returns(uint256)
-func (_SampleTestContract *SampleTestContractCallerSession) PerformMaxIterations() (*big.Int, error) {
-	return _SampleTestContract.Contract.PerformMaxIterations(&_SampleTestContract.CallOpts)
-}
-
-// AddElementsToArray is a paid mutator transaction binding the contract method 0xe53213b3.
-//
-// Solidity: function addElementsToArray(uint256 newElements) returns()
-func (_SampleTestContract *SampleTestContractTransactor) AddElementsToArray(opts *bind.TransactOpts, newElements *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.contract.Transact(opts, "addElementsToArray", newElements)
-}
-
-// AddElementsToArray is a paid mutator transaction binding the contract method 0xe53213b3.
-//
-// Solidity: function addElementsToArray(uint256 newElements) returns()
-func (_SampleTestContract *SampleTestContractSession) AddElementsToArray(newElements *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.AddElementsToArray(&_SampleTestContract.TransactOpts, newElements)
-}
-
-// AddElementsToArray is a paid mutator transaction binding the contract method 0xe53213b3.
-//
-// Solidity: function addElementsToArray(uint256 newElements) returns()
-func (_SampleTestContract *SampleTestContractTransactorSession) AddElementsToArray(newElements *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.AddElementsToArray(&_SampleTestContract.TransactOpts, newElements)
-}
-
-// PerformUpkeep is a paid mutator transaction binding the contract method 0x4585e33b.
-//
-// Solidity: function performUpkeep(bytes performData) returns()
-func (_SampleTestContract *SampleTestContractTransactor) PerformUpkeep(opts *bind.TransactOpts, performData []byte) (*types.Transaction, error) {
-	return _SampleTestContract.contract.Transact(opts, "performUpkeep", performData)
-}
-
-// PerformUpkeep is a paid mutator transaction binding the contract method 0x4585e33b.
-//
-// Solidity: function performUpkeep(bytes performData) returns()
-func (_SampleTestContract *SampleTestContractSession) PerformUpkeep(performData []byte) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.PerformUpkeep(&_SampleTestContract.TransactOpts, performData)
-}
-
-// PerformUpkeep is a paid mutator transaction binding the contract method 0x4585e33b.
-//
-// Solidity: function performUpkeep(bytes performData) returns()
-func (_SampleTestContract *SampleTestContractTransactorSession) PerformUpkeep(performData []byte) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.PerformUpkeep(&_SampleTestContract.TransactOpts, performData)
-}
-
-// ResizeArray is a paid mutator transaction binding the contract method 0xa00d6cd0.
-//
-// Solidity: function resizeArray(uint256 newLength) returns()
-func (_SampleTestContract *SampleTestContractTransactor) ResizeArray(opts *bind.TransactOpts, newLength *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.contract.Transact(opts, "resizeArray", newLength)
-}
-
-// ResizeArray is a paid mutator transaction binding the contract method 0xa00d6cd0.
-//
-// Solidity: function resizeArray(uint256 newLength) returns()
-func (_SampleTestContract *SampleTestContractSession) ResizeArray(newLength *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.ResizeArray(&_SampleTestContract.TransactOpts, newLength)
-}
-
-// ResizeArray is a paid mutator transaction binding the contract method 0xa00d6cd0.
-//
-// Solidity: function resizeArray(uint256 newLength) returns()
-func (_SampleTestContract *SampleTestContractTransactorSession) ResizeArray(newLength *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.ResizeArray(&_SampleTestContract.TransactOpts, newLength)
-}
-
-// SetMaxIterations is a paid mutator transaction binding the contract method 0x8d8987b2.
-//
-// Solidity: function setMaxIterations(uint256 _checkMaxIterations, uint256 _performMaxIterations) returns()
-func (_SampleTestContract *SampleTestContractTransactor) SetMaxIterations(opts *bind.TransactOpts, _checkMaxIterations *big.Int, _performMaxIterations *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.contract.Transact(opts, "setMaxIterations", _checkMaxIterations, _performMaxIterations)
-}
-
-// SetMaxIterations is a paid mutator transaction binding the contract method 0x8d8987b2.
-//
-// Solidity: function setMaxIterations(uint256 _checkMaxIterations, uint256 _performMaxIterations) returns()
-func (_SampleTestContract *SampleTestContractSession) SetMaxIterations(_checkMaxIterations *big.Int, _performMaxIterations *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.SetMaxIterations(&_SampleTestContract.TransactOpts, _checkMaxIterations, _performMaxIterations)
-}
-
-// SetMaxIterations is a paid mutator transaction binding the contract method 0x8d8987b2.
-//
-// Solidity: function setMaxIterations(uint256 _checkMaxIterations, uint256 _performMaxIterations) returns()
-func (_SampleTestContract *SampleTestContractTransactorSession) SetMaxIterations(_checkMaxIterations *big.Int, _performMaxIterations *big.Int) (*types.Transaction, error) {
-	return _SampleTestContract.Contract.SetMaxIterations(&_SampleTestContract.TransactOpts, _checkMaxIterations, _performMaxIterations)
-}
-
-// ToggleFlag is a paid mutator transaction binding the contract method 0x00c0096e.
-//
-// Solidity: function toggleFlag() returns()
-func (_SampleTestContract *SampleTestContractTransactor) ToggleFlag(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _SampleTestContract.contract.Transact(opts, "toggleFlag")
-}
-
-// ToggleFlag is a paid mutator transaction binding the contract method 0x00c0096e.
-//
-// Solidity: function toggleFlag() returns()
-func (_SampleTestContract *SampleTestContractSession) ToggleFlag() (*types.Transaction, error) {
-	return _SampleTestContract.Contract.ToggleFlag(&_SampleTestContract.TransactOpts)
-}
-
-// ToggleFlag is a paid mutator transaction binding the contract method 0x00c0096e.
-//
-// Solidity: function toggleFlag() returns()
-func (_SampleTestContract *SampleTestContractTransactorSession) ToggleFlag() (*types.Transaction, error) {
-	return _SampleTestContract.Contract.ToggleFlag(&_SampleTestContract.TransactOpts)
+	event.Raw = log
+	return event, nil
 }

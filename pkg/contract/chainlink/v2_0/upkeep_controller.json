@@ -226,6 +226,25 @@
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "performData",
+        "type": "bytes"
+      }
+    ],
+    "name": "decodePerformDataTest",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "offset",
         "type": "uint256"
@@ -344,6 +363,43 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "lastUpkeepId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getInfoTest",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "performOffset",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "performLimit",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getLastIdTest",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "upkeepId",
         "type": "uint256"
       }
@@ -381,6 +437,69 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract AutomationCompatibleWithViewInterface",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "checkData",
+        "type": "bytes"
+      }
+    ],
+    "name": "getPerformDataTest",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "performOffset",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "performLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "performArray",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "getResultTest",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isNeeded",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newOffset",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newLimit",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
