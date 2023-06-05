@@ -90,7 +90,7 @@ func (s *LinkTokenService) IncreaseAllowance(ctx context.Context, spender common
 		return err
 	}
 
-	_, err = s.contract.IncreaseApproval(opts, spender, amount)
+	a, err := s.contract.IncreaseApproval(opts, spender, amount)
 	if err != nil {
 		log.Err(err).Str("module", s.moduleName).
 			Str("func", "IncreaseAllowance").
@@ -98,6 +98,7 @@ func (s *LinkTokenService) IncreaseAllowance(ctx context.Context, spender common
 				"owner_address":   s.accountService.GetAccount().Address(),
 				"spender_address": spender.String(),
 				"increase_amount": amount.String(),
+				"txid":            a.Hash().String(),
 			}).Msg("Failed to increase allowance of LINK token")
 	}
 	return err
