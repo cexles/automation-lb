@@ -90,7 +90,7 @@ func (s *LinkTokenService) IncreaseAllowance(ctx context.Context, spender common
 		return err
 	}
 
-	_, err = s.contract.IncreaseAllowance(opts, spender, amount)
+	_, err = s.contract.IncreaseApproval(opts, spender, amount)
 	if err != nil {
 		log.Err(err).Str("module", s.moduleName).
 			Str("func", "IncreaseAllowance").
