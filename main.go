@@ -80,10 +80,16 @@ func main() {
 		log.Panic().Err(err).Msg("failed to initialize link token contract")
 	}
 
-	sampleContract, ok := cfg.Contracts["sample_test"] //todo mutlicontract
+	sampleContract, ok := cfg.Contracts[cfg.App.ActiveContractKey] // todo mutlicontract
 	if !ok {
 		log.Panic().Err(errors.New("contract not found, check config")).Msg("failed to get logic contract")
 	}
+
+	log.Info().Fields(map[string]any{
+		"name":       sampleContract.Name,
+		"short_name": sampleContract.ShortName,
+		"version":    sampleContract.Version,
+	}).Msg("logic contract found")
 
 	cdService := v2_0.NewCheckDataService()
 

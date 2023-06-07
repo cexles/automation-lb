@@ -75,8 +75,9 @@ func (s *UpkeepService) StartBalanceWatcher(headerCh chan *types.Header) {
 				log.Debug().Str("module", s.moduleName).
 					Str("func", "StartBalanceWatcher").
 					Fields(map[string]any{
-						"upkeep_id": upkeep.Id.String(),
-						"balance":   upkeep.Info.Balance.String(),
+						"upkeep_id":   upkeep.Id.String(),
+						"balance":     upkeep.Info.Balance.String(),
+						"min_balance": upkeep.MinAmount.String(),
 					}).Msg("balance check")
 				if upkeep.Info.Balance.Cmp(upkeep.MinAmount) <= 0 {
 					log.Warn().Str("module", s.moduleName).
@@ -88,7 +89,7 @@ func (s *UpkeepService) StartBalanceWatcher(headerCh chan *types.Header) {
 						}).Msg("upkeep balance is too low. Trying to top up")
 					topup := model.UpkeepTopup{
 						UpkeepId: *upkeep.Id,
-						Amount:   *s.cfg.Chainlink.TopupAmount,
+						Amount:   *new(big.Int).Mul(upkeep.MinAmount, big.NewInt(3)), // chainlink recommends to maintain an Upkeep LINK balance that is 3 to 5 times the minimum balance
 					}
 					s.topUpCh <- topup
 				}

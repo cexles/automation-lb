@@ -1,7 +1,8 @@
 # Automation-lb
-Chainlink Automation scaling &amp; loadbalancing 
+### Chainlink Automation scaling &amp; loadbalancing 
+![chainlink-view.png](docs/chainlink-view.png)
 
-![sample-log.png](sample-log.png)
+![sample-log.png](docs/sample-log.png)
 
 
 ## Motivation
@@ -11,8 +12,8 @@ In [Cexles](https://cexles.finance) we need to scale [Chainlink Automation](http
 This software will allow us to unlock the full potential of Chainlink Automation. 
 
 ## Current stage
-We started an initial development of MVP with smart contracts deployed on Sepolia Ethereum testnet.
-11.05.2022: MVP PoC version. Needs refactor & minor bug fixing.
+We started an initial development of MVP with smart contracts deployed on Goerli Ethereum testnet.
+MVP PoC version. Needs refactor & minor bug fixing.
 
 ## Desired result
 Hassle-free automated scaling for any Chainlink Automation compatible contract. 
@@ -31,6 +32,30 @@ Hassle-free automated scaling for any Chainlink Automation compatible contract.
 - [ ] Dashboard
 - [ ] Tests
 - [ ] Reference contract implementation
-- [ ] Public Docs
+- [x] [Public Docs](https://docs.cexles.finance)
 
-### <i>Let Chainlink grow with your web3 infrastructure<i/>
+## Installing
+- Install Docker and Docker Compose
+- Copy config file
+  ```shell 
+  cp goerli.example.config.yaml config.yaml
+    ```
+- Set config values according to docs
+- Run build
+  ```shell
+  docker-compose build
+  ```
+- Run balancer
+  ```shell
+  docker-compose up -d
+  ```
+- Check program logs. If everything is fine you will see something similar to:
+  ```shell
+  INF upkeep controller found address=0x3911d7499d72dd5f4ea88270af6dfeced1a1bef6
+  INF logic contract found name="Cexles platform contract" short_name=cexles_platform version=1_0
+  INF subscribed to NewHead event func=StartBlockListener module=service.ChainService
+  ```
+  
+    <i>If you have any questions about installing/usage feel free to create an issue</i>
+
+### <i>Let Chainlink grow with your web3 infrastructure</i>

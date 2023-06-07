@@ -24,13 +24,13 @@ type AccountConfig struct {
 }
 
 type NetworkConfig struct {
-	RpcUrl    string   `yaml:"rpc_url"`
-	IsTestnet bool     `yaml:"is_testnet"`
-	ChainId   *big.Int `yaml:"chain_id"`
+	RpcUrl  string   `yaml:"rpc_url"`
+	ChainId *big.Int `yaml:"chain_id"`
 }
 
 type AppConfig struct {
-	LogLevel int8 `yaml:"log_level"`
+	LogLevel          int8   `yaml:"log_level"`
+	ActiveContractKey string `yaml:"active_contract_key"`
 }
 
 type ChainlinkConfig struct {
