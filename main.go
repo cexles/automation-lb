@@ -98,7 +98,7 @@ func main() {
 			Msg("failed to increase allowance to upkeep controller")
 	}
 
-	upkeepService := v2_0.NewUpkeepService(ctx, cfg, client, cdService, accountService, upkeepControllerContract, cfg.Chainlink.UpkeepControllerAddress, sampleContract, newUpkeepCh, topUpCh)
+	upkeepService := v2_0.NewUpkeepService(ctx, cfg, client, cdService, accountService, upkeepControllerContract, cfg.Chainlink.UpkeepControllerAddress, account.Address(), sampleContract, newUpkeepCh, topUpCh)
 
 	subscribedToNewHeadFuncs := []func(chan *types.Header){
 		upkeepService.StartBalanceWatcher, upkeepService.StartScaler,

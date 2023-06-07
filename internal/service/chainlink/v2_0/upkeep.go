@@ -25,13 +25,14 @@ type UpkeepService struct {
 	accountService        *service.AccountService
 	upkeepContract        *v2_0.UpkeepControllerContract
 	upkeepContractAddress common.Address
+	adminAddress          common.Address
 	logicContractInfo     model.ContractInfo
 	newUpkeepCh           chan model.Upkeep
 	topUpCh               chan model.UpkeepTopup
 	moduleName            string
 }
 
-func NewUpkeepService(ctx context.Context, cfg *config.Config, client *ethclient.Client, checkDataService *CheckDataService, accountService *service.AccountService, upkeepContract *v2_0.UpkeepControllerContract, upkeepContractAddress common.Address, logicContractInfo model.ContractInfo, newUpkeepCh chan model.Upkeep, topUpCh chan model.UpkeepTopup) *UpkeepService {
+func NewUpkeepService(ctx context.Context, cfg *config.Config, client *ethclient.Client, checkDataService *CheckDataService, accountService *service.AccountService, upkeepContract *v2_0.UpkeepControllerContract, upkeepContractAddress common.Address, adminAddress common.Address, logicContractInfo model.ContractInfo, newUpkeepCh chan model.Upkeep, topUpCh chan model.UpkeepTopup) *UpkeepService {
 	return &UpkeepService{
 		ctx:                   ctx,
 		cfg:                   cfg,
@@ -40,6 +41,7 @@ func NewUpkeepService(ctx context.Context, cfg *config.Config, client *ethclient
 		accountService:        accountService,
 		upkeepContract:        upkeepContract,
 		upkeepContractAddress: upkeepContractAddress,
+		adminAddress:          adminAddress,
 		logicContractInfo:     logicContractInfo,
 		newUpkeepCh:           newUpkeepCh,
 		topUpCh:               topUpCh,
@@ -156,7 +158,7 @@ func (s *UpkeepService) StartScaler(headerCh chan *types.Header) {
 				continue
 			}
 
-			newUpkeep, err := s.NewUpkeep(s.logicContractInfo, s.upkeepContractAddress, r.NewLimit.Uint64(), r.NewOffset.Uint64())
+			newUpkeep, err := s.NewUpkeep(s.logicContractInfo, s.adminAddress, r.NewLimit.Uint64(), r.NewOffset.Uint64())
 			if err != nil {
 				log.Err(err).Str("module", s.moduleName).
 					Str("func", "StartScaler").
@@ -175,7 +177,7 @@ func (s *UpkeepService) StartScaler(headerCh chan *types.Header) {
 }
 
 func (s *UpkeepService) CreateInitialUpkeep() error {
-	initialUpkeep, err := s.NewUpkeep(s.logicContractInfo, s.upkeepContractAddress, s.logicContractInfo.ExecutionLimit, 0)
+	initialUpkeep, err := s.NewUpkeep(s.logicContractInfo, s.adminAddress, s.logicContractInfo.ExecutionLimit, 0)
 	if err != nil {
 		log.Err(err).Str("module", s.moduleName).
 			Str("func", "CreateInitialUpkeep").
