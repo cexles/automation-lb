@@ -63,6 +63,13 @@ func (s *LinkTokenService) CheckAllowance(ctx context.Context, spender common.Ad
 			}).Msg("Failed to approve LINK token")
 		return nil, err
 	}
+
+	log.Debug().Str("module", s.moduleName).
+		Str("func", "CheckAllowance").
+		Fields(map[string]any{
+			"spender":           spender.String(),
+			"current_allowance": allowance.String(),
+		}).Msg("allowance check")
 	return allowance, err
 }
 
