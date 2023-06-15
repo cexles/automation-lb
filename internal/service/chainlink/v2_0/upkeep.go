@@ -7,6 +7,7 @@ import (
 	"github.com/cexles/automation-lb/internal/config"
 	"github.com/cexles/automation-lb/internal/model"
 	"github.com/cexles/automation-lb/internal/service"
+	"github.com/cexles/automation-lb/internal/service/chainlink"
 	"github.com/cexles/automation-lb/pkg/contract/chainlink/v2_0"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -18,34 +19,58 @@ import (
 )
 
 type UpkeepService struct {
-	ctx                   context.Context
-	cfg                   *config.Config
-	client                *ethclient.Client
-	checkDataService      *CheckDataService
-	accountService        *service.AccountService
-	upkeepContract        *v2_0.UpkeepControllerContract
-	upkeepContractAddress common.Address
-	adminAddress          common.Address
-	logicContractInfo     model.ContractInfo
-	newUpkeepCh           chan model.Upkeep
-	topUpCh               chan model.UpkeepTopup
-	moduleName            string
+	ctx                      context.Context
+	cfg                      *config.Config
+	client                   *ethclient.Client
+	checkDataService         *CheckDataService
+	accountService           *service.AccountService
+	tokenService             *chainlink.LinkTokenService
+	upkeepControllerContract *v2_0.UpkeepControllerContract
+	upkeepControllerAddress  common.Address
+	adminAddress             common.Address
+	logicContractInfo        model.ContractInfo
+	newUpkeepCh              chan model.Upkeep
+	topUpCh                  chan model.UpkeepTopup
+	moduleName               string
 }
 
-func NewUpkeepService(ctx context.Context, cfg *config.Config, client *ethclient.Client, checkDataService *CheckDataService, accountService *service.AccountService, upkeepContract *v2_0.UpkeepControllerContract, upkeepContractAddress common.Address, adminAddress common.Address, logicContractInfo model.ContractInfo, newUpkeepCh chan model.Upkeep, topUpCh chan model.UpkeepTopup) *UpkeepService {
+func NewUpkeepService(ctx context.Context, cfg *config.Config, client *ethclient.Client, checkDataService *CheckDataService, accountService *service.AccountService, tokenService *chainlink.LinkTokenService, upkeepContract *v2_0.UpkeepControllerContract, upkeepContractAddress common.Address, adminAddress common.Address, logicContractInfo model.ContractInfo, newUpkeepCh chan model.Upkeep, topUpCh chan model.UpkeepTopup) *UpkeepService {
 	return &UpkeepService{
-		ctx:                   ctx,
-		cfg:                   cfg,
-		client:                client,
-		checkDataService:      checkDataService,
-		accountService:        accountService,
-		upkeepContract:        upkeepContract,
-		upkeepContractAddress: upkeepContractAddress,
-		adminAddress:          adminAddress,
-		logicContractInfo:     logicContractInfo,
-		newUpkeepCh:           newUpkeepCh,
-		topUpCh:               topUpCh,
-		moduleName:            "service.chainlink.v2_0.upkeepService",
+		ctx:                      ctx,
+		cfg:                      cfg,
+		client:                   client,
+		checkDataService:         checkDataService,
+		accountService:           accountService,
+		tokenService:             tokenService,
+		upkeepControllerContract: upkeepContract,
+		upkeepControllerAddress:  upkeepContractAddress,
+		adminAddress:             adminAddress,
+		logicContractInfo:        logicContractInfo,
+		newUpkeepCh:              newUpkeepCh,
+		topUpCh:                  topUpCh,
+		moduleName:               "service.chainlink.v2_0.upkeepService",
+	}
+}
+
+func (s *UpkeepService) StartAllowanceWatcher(headerCh chan *types.Header) {
+	for {
+		select {
+		case <-s.ctx.Done():
+			return
+		case h, ok := <-headerCh:
+			if !ok {
+				return
+			}
+			log.Debug().Fields(map[string]any{"height": h.Number}).Msg("executing allowance watcher")
+			err := s.tokenService.IncreaseAllowanceIfNotEnough(s.ctx, s.upkeepControllerAddress, s.cfg.Chainlink.MinControllerApprove)
+			if err != nil {
+				log.Error().Err(err).
+					Fields(map[string]any{
+						"allowance_to": s.upkeepControllerAddress.String(),
+						"func":         "StartAllowanceWatcher",
+					}).Msg("failed to increase allowance to upkeep controller")
+			}
+		}
 	}
 }
 
@@ -63,8 +88,8 @@ func (s *UpkeepService) StartBalanceWatcher(headerCh chan *types.Header) {
 			if err != nil {
 				log.Err(err).Str("module", s.moduleName).
 					Str("func", "StartBalanceWatcher").
-					Str("upkeep_contract", s.upkeepContractAddress.String()).
-					Msg("failed to get upkeeps")
+					Str("controller_contract_address", s.upkeepControllerAddress.String()).
+					Msg("failed to get upkeeps  from controller")
 				continue
 			}
 			if len(upkeeps) == 0 {
@@ -111,7 +136,7 @@ func (s *UpkeepService) StartPayer() {
 				if err != nil {
 					return
 				}
-				r, err := s.upkeepContract.AddFunds(opts, &topup.UpkeepId, &topup.Amount)
+				r, err := s.upkeepControllerContract.AddFunds(opts, &topup.UpkeepId, &topup.Amount)
 				if err != nil {
 					log.Err(err).Str("module", s.moduleName).
 						Str("func", "StartPayer").
@@ -144,14 +169,14 @@ func (s *UpkeepService) StartScaler(headerCh chan *types.Header) {
 				return
 			}
 			log.Debug().Fields(map[string]any{"height": h.Number}).Msg("executing scaler")
-			r, err := s.upkeepContract.IsNewUpkeepNeeded(&bind.CallOpts{})
+			r, err := s.upkeepControllerContract.IsNewUpkeepNeeded(&bind.CallOpts{})
 			if err != nil {
 				log.Err(err).Str("module", s.moduleName).
 					Str("func", "StartScaler").
 					Fields(map[string]any{
 						"contract_name":               s.logicContractInfo.Name,
 						"logic_contract_address":      s.logicContractInfo.Address.String(),
-						"controller_contract_address": s.upkeepContractAddress,
+						"controller_contract_address": s.upkeepControllerAddress,
 					}).Msg("failed to check IsNewUpkeepNeeded")
 				continue
 			}
@@ -166,7 +191,7 @@ func (s *UpkeepService) StartScaler(headerCh chan *types.Header) {
 					Fields(map[string]any{
 						"contract_name":               s.logicContractInfo.Name,
 						"logic_contract_address":      s.logicContractInfo.Address.String(),
-						"controller_contract_address": s.upkeepContractAddress,
+						"controller_contract_address": s.upkeepControllerAddress,
 						"new_limit":                   r.NewLimit.String(),
 						"new_offset":                  r.NewOffset.String(),
 					}).Msg("failed to create new scaled upkeep")
@@ -185,7 +210,7 @@ func (s *UpkeepService) CreateInitialUpkeep() error {
 			Fields(map[string]any{
 				"contract_name":               s.logicContractInfo.Name,
 				"logic_contract_address":      s.logicContractInfo.Address.String(),
-				"controller_contract_address": s.upkeepContractAddress,
+				"controller_contract_address": s.upkeepControllerAddress,
 			}).Msg("failed to create initial upkeep")
 		return err
 	}
@@ -211,7 +236,7 @@ func (s *UpkeepService) StartCreator() {
 					return
 				}
 
-				tx, err := s.upkeepContract.RegisterAndPredictID(opts, v2_0.RegistrationParams{
+				tx, err := s.upkeepControllerContract.RegisterAndPredictID(opts, v2_0.RegistrationParams{
 					Name:           newUpkeep.Name,
 					EncryptedEmail: newUpkeep.EncryptedEmail,
 					UpkeepContract: newUpkeep.UpkeepContract.Address,
@@ -245,7 +270,7 @@ func (s *UpkeepService) StartCreator() {
 }
 
 func (s *UpkeepService) GetUpkeeps() ([]v2_0.UpkeepControllerExampleDetailedUpkeep, error) {
-	return s.upkeepContract.GetDetailedUpkeeps(&bind.CallOpts{}, new(big.Int).SetUint64(0), new(big.Int).SetUint64(1000))
+	return s.upkeepControllerContract.GetDetailedUpkeeps(&bind.CallOpts{}, new(big.Int).SetUint64(0), new(big.Int).SetUint64(1000))
 }
 
 func (s *UpkeepService) NewUpkeep(contract model.ContractInfo, adminAddress common.Address, limit uint64, offset uint64) (model.Upkeep, error) {
